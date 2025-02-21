@@ -4,7 +4,8 @@ import { formatearMonto } from '../utils/formatearMonto';
 
 function ListaNotasCredito({ 
   facturaSeleccionada, 
-  onSeleccionNotasCredito 
+  onSeleccionNotasCredito,
+  notasCreditoAsignadas 
 }) {
   const [notasCredito, setNotasCredito] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -23,7 +24,10 @@ function ListaNotasCredito({
         
         const datos = await respuesta.json();
         const notasFiltradas = datos.filter(
-          item => item.type === 'credit_note' && item.reference === facturaSeleccionada.id
+          item => 
+            item.type === 'credit_note' && 
+            item.reference === facturaSeleccionada.id &&
+            !notasCreditoAsignadas.some(asignada => asignada.id === item.id)
         );
         setNotasCredito(notasFiltradas);
         setNotasCreditoSeleccionadas([]);
@@ -37,7 +41,7 @@ function ListaNotasCredito({
     if (facturaSeleccionada) {
       obtenerNotasCredito();
     }
-  }, [facturaSeleccionada]);
+  }, [facturaSeleccionada, notasCreditoAsignadas]);
 
   const manejarSeleccionMultiple = (nota) => {
     const nuevaSeleccion = notasCreditoSeleccionadas.some(n => n.id === nota.id)
