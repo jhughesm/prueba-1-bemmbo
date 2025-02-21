@@ -1,0 +1,40 @@
+.contenedor-boton-asignacion {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .boton-asignacion-contenedor {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #F0F0F0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .boton-asignacion {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .boton-asignacion-contenedor.habilitado .boton-asignacion {
+    background-color: #4A4AFF;
+  }
+  
+  .boton-asignacion-contenedor.deshabilitado .boton-asignacion {
+    background-color: #CCCCCC;
+    cursor: not-allowed;
+  }
+  
+  .boton-asignacion-contenedor.deshabilitado {
+    cursor: not-allowed;
+  }

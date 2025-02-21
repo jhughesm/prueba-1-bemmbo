@@ -69,7 +69,7 @@ function ListaFacturas({ onSeleccionarFactura }) {
                     type="radio"
                     name="factura"
                     checked={facturaSeleccionada && facturaSeleccionada.id === factura.id}
-                    onChange={() => {}}
+                    onChange={() => manejarSeleccion(factura)}
                     onClick={(e) => e.stopPropagation()}
                   />
                 </td>

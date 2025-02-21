@@ -1,22 +1,22 @@
 import React from 'react';
 import '../styles/ResumenAsignacion.css';
+import { formatearMonto, convertirAUSD } from '../utils/formatearMonto';
 
 function ResumenAsignacion({ 
   facturaSeleccionada, 
-  notasCreditoSeleccionadas, 
-  formatearMonto 
+  notasCreditoSeleccionadas
 }) {
   if (!facturaSeleccionada || notasCreditoSeleccionadas.length === 0) {
     return null;
   }
 
   const montoTotalNotasCredito = notasCreditoSeleccionadas.reduce(
-    (total, nota) => total + nota.amount, 
+    (total, nota) => total + convertirAUSD(nota.amount, nota.currency), 
     0
   );
 
   const montoRestante = Math.max(
-    facturaSeleccionada.amount - montoTotalNotasCredito, 
+    convertirAUSD(facturaSeleccionada.amount, facturaSeleccionada.currency) - montoTotalNotasCredito, 
     0
   );
 
@@ -40,13 +40,19 @@ function ResumenAsignacion({
         <div>
           <strong>Monto Total de Notas de Crédito:</strong>
           <p>
-            {formatearMonto(montoTotalNotasCredito, facturaSeleccionada.currency)}
+            {formatearMonto(
+              montoTotalNotasCredito * 800, 
+              'CLP'
+            )}
           </p>
         </div>
         <div>
           <strong>Monto Restante:</strong>
           <p>
-            {formatearMonto(montoRestante, facturaSeleccionada.currency)}
+            {formatearMonto(
+              montoRestante * 800, 
+              'CLP'
+            )}
           </p>
         </div>
       </div>
