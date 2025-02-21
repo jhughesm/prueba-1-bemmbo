@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import '../styles/ListaFacturas.css';
+import { formatearMonto } from '../utils/formatearMonto';
 
-function ListaFacturas({onSeleccionarFactura}) {
+function ListaFacturas({ onSeleccionarFactura }) {
   const [facturas, setFacturas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
-  const [tasaCambio, setTasaCambio] = useState(800);
   const [facturaSeleccionada, setFacturaSeleccionada] = useState(null);
 
   useEffect(() => {
@@ -19,7 +19,6 @@ function ListaFacturas({onSeleccionarFactura}) {
         }
         
         const datos = await respuesta.json();
-        // Filtramos solo las facturas recibidas
         const facturasRecibidas = datos.filter(factura => factura.type === 'received');
         setFacturas(facturasRecibidas);
       } catch (error) {
@@ -31,16 +30,6 @@ function ListaFacturas({onSeleccionarFactura}) {
     
     obtenerFacturas();
   }, []);
-
-  const formatearMonto = (monto, moneda) => {
-    if (moneda === 'CLP') {
-      const dolares = (monto / tasaCambio);
-      return `${monto.toLocaleString()} CLP (USD ${dolares.toLocaleString()})`;
-    } else if (moneda === 'USD') {
-      return `${monto.toLocaleString()} USD`;
-    }
-    return `${monto.toLocaleString()} ${moneda}`;
-  };
 
   const manejarSeleccion = (factura) => {
     setFacturaSeleccionada(factura);
@@ -69,7 +58,7 @@ function ListaFacturas({onSeleccionarFactura}) {
             </tr>
           </thead>
           <tbody>
-          {facturas.map(factura => (
+            {facturas.map(factura => (
               <tr 
                 key={factura.id} 
                 className={facturaSeleccionada && facturaSeleccionada.id === factura.id ? 'fila-seleccionada' : ''}

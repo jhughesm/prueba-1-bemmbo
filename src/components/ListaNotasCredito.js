@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import '../styles/ListaNotasCredito.css';
+import { formatearMonto } from '../utils/formatearMonto';
 
-function ListaNotasCredito({ facturaSeleccionada }) {
+function ListaNotasCredito({ 
+  facturaSeleccionada, 
+  onSeleccionNotasCredito 
+}) {
   const [notasCredito, setNotasCredito] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
-  const [tasaCambio, setTasaCambio] = useState(800);
   const [notasCreditoSeleccionadas, setNotasCreditoSeleccionadas] = useState([]);
 
   useEffect(() => {
@@ -19,11 +22,11 @@ function ListaNotasCredito({ facturaSeleccionada }) {
         }
         
         const datos = await respuesta.json();
-        // Filtramos solo las notas de crédito que hacen referencia a la factura seleccionada
         const notasFiltradas = datos.filter(
           item => item.type === 'credit_note' && item.reference === facturaSeleccionada.id
         );
         setNotasCredito(notasFiltradas);
+        setNotasCreditoSeleccionadas([]);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -36,25 +39,13 @@ function ListaNotasCredito({ facturaSeleccionada }) {
     }
   }, [facturaSeleccionada]);
 
-  const formatearMonto = (monto, moneda) => {
-    if (moneda === 'CLP') {
-      const dolares = (monto / tasaCambio);
-      return `${monto.toLocaleString()} CLP (USD ${dolares.toLocaleString()})`;
-    } else if (moneda === 'USD') {
-      return `${monto.toLocaleString()} USD`;
-    }
-    return `${monto.toLocaleString()} ${moneda}`;
-  };
-
   const manejarSeleccionMultiple = (nota) => {
-    setNotasCreditoSeleccionadas(prev => {
-      const estaSeleccionada = prev.some(n => n.id === nota.id);
-      if (estaSeleccionada) {
-        return prev.filter(n => n.id !== nota.id);
-      } else {
-        return [...prev, nota];
-      }
-    });
+    const nuevaSeleccion = notasCreditoSeleccionadas.some(n => n.id === nota.id)
+      ? notasCreditoSeleccionadas.filter(n => n.id !== nota.id)
+      : [...notasCreditoSeleccionadas, nota];
+    
+    setNotasCreditoSeleccionadas(nuevaSeleccion);
+    onSeleccionNotasCredito(nuevaSeleccion);
   };
 
   if (!facturaSeleccionada) {
