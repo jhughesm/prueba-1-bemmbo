@@ -1,0 +1,62 @@
+.tabla-notas-credito {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tabla-notas-credito th {
+  background-color: #f2f2f2;
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabla-notas-credito td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.tabla-notas-credito tbody tr {
+  cursor: pointer;
+}
+
+.tabla-notas-credito tr:hover {
+  background-color: #f5f5f5;
+}
+
+.fila-seleccionada {
+  background-color: #e6f7ff !important;
+}
+
+h2 {
+  color: #333;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.contenedor-tabla {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.mensaje-carga, .mensaje-error, .mensaje-info {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+}
+
+.mensaje-error {
+  color: #ff4d4f;
+}
+
+.mensaje-info {
+  color: #1890ff;
+  font-style: italic;
+}

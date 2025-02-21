@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../styles/ListaFacturas.css';
 
-function ListaFacturas() {
+function ListaFacturas({onSeleccionarFactura}) {
   const [facturas, setFacturas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
@@ -34,8 +34,8 @@ function ListaFacturas() {
 
   const formatearMonto = (monto, moneda) => {
     if (moneda === 'CLP') {
-      const dolares = (monto / tasaCambio).toFixed(2);
-      return `${monto.toLocaleString()} CLP (USD ${dolares})`;
+      const dolares = (monto / tasaCambio);
+      return `${monto.toLocaleString()} CLP (USD ${dolares.toLocaleString()})`;
     } else if (moneda === 'USD') {
       return `${monto.toLocaleString()} USD`;
     }
@@ -44,6 +44,7 @@ function ListaFacturas() {
 
   const manejarSeleccion = (factura) => {
     setFacturaSeleccionada(factura);
+    onSeleccionarFactura(factura);
   };
 
   if (cargando) {
@@ -68,17 +69,19 @@ function ListaFacturas() {
             </tr>
           </thead>
           <tbody>
-            {facturas.map(factura => (
+          {facturas.map(factura => (
               <tr 
                 key={factura.id} 
                 className={facturaSeleccionada && facturaSeleccionada.id === factura.id ? 'fila-seleccionada' : ''}
+                onClick={() => manejarSeleccion(factura)}
               >
                 <td>
                   <input
                     type="radio"
                     name="factura"
                     checked={facturaSeleccionada && facturaSeleccionada.id === factura.id}
-                    onChange={() => manejarSeleccion(factura)}
+                    onChange={() => {}}
+                    onClick={(e) => e.stopPropagation()}
                   />
                 </td>
                 <td>{factura.id}</td>
